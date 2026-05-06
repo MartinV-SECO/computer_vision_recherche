@@ -8,7 +8,12 @@ Espace de travail local regroupant **vision 3D**, **nuages de points (Open3D)**,
 ## Pistes de développement:
 Pour les calculs de volume (src/depth_field_V4_voxel_volume.ipynb), essayer d'obtenir de vraies cartes de profondeur à la place d'images générées par IA (remplacer depth_pro par un lidar/résultat de photogrammétrie). Garder le pipeline Voxel, la géométrie provoquera des erreurs régulièrement. 
 
-automatisation dessin/modélisation. Réseau de neurones pour classifier les points des fichiers dwg/dxf (src/layer_classification/). Le target est actuellement de distinguer les points "réels" et les points "fictifs". Pour une modélisation 3D simple de l'objet ou un tracé plus propre du fichier. 
+automatisation dessin/modélisation:
+- Réseau de neurones pour classifier les points des fichiers dwg/dxf (src/layer_classification/). Le target est actuellement de distinguer les points "réels" et les points "fictifs". Pour une modélisation 3D simple de l'objet ou un tracé plus propre du fichier.
+- Création d'objet 3D à partir d'un fichier DXF (src/dxf_to_3d_from_layers.ipynb). Export PLY possible, il faut que le fichier DXF soit propre (aucun point "fictif").
+- 
+
+
 
 ## Structure (résumé)
 
