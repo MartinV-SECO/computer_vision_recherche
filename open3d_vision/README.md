@@ -15,7 +15,11 @@ automatisation dessin/modélisation:
 
 Projet AR: premières briques sur CV_3D. Il faut maintenant superposer une maquette (géométrie) avec une position réelle. 
 
+## Compromis:
 
+- Choix voxel/géométrie pour calcul de volume; les techniques de géométrie donneront résultat plus précis, mais calculer le résultat ne sera pas toujours possible.
+- 
+- Carte de profondeur réelle/générée par IA; les images générées par IA sont capables de retransmettre un relief réaliste, mais manque de contexte précis. 
 
 ## Structure (résumé)
 
