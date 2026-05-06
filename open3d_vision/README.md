@@ -17,9 +17,11 @@ Projet AR: premières briques sur CV_3D. Il faut maintenant superposer une maque
 
 ## Compromis:
 
-- Choix voxel/géométrie pour calcul de volume; les techniques de géométrie donneront résultat plus précis, mais calculer le résultat ne sera pas toujours possible.
-- 
-- Carte de profondeur réelle/générée par IA; les images générées par IA sont capables de retransmettre un relief réaliste, mais manque de contexte précis. 
+- Choix voxel/géométrie pour calcul de volume; les techniques de géométrie (Poisson, Delaunay) donneront un résultat plus précis, mais calculer le résultat ne sera pas toujours possible.
+- Carte de profondeur réelle/générée par IA; les images générées par IA (depth_pro) sont capables de retransmettre un relief réaliste, mais manque de contexte précis. Il faut un appareil équipé d'un matériel capable de capturer la profondeur sur place au lieu de recréer cette donnée depuis une machine.
+
+  
+-  architecture de machine learning (classification de layers): avec comme input un point DXF (200 catégories) et comme output certaines catégories de point DXF (4 à 5, pour pouvoir modéliser un objet 3D à partir de ces informations), plusieurs architectures sont possibles. Un decision tree aurait été possible, mais certaines valeurs peuvent devenir continues s'il y a un besoin final différent. Aussi, les données d'entraînement ont une taille suffisante pour un réseau de neurones et l'overfitting est probable au vu des données d'input (notamment les layers). 
 
 ## Structure (résumé)
 
