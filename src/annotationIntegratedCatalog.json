@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "description": "Catalogue des gabarits d'annotation intégrés (Viewer 360 ETL) : domaines globaux (enveloppe, lots, équipements) et profils « matière + Autre… ». Modifier ce fichier pour ajuster libellés, couleurs, listes et alias d'import.",
+  "templatePickerOrder": [
+    "defaut_mur",
+    "sol",
+    "plafond",
+    "facade",
+    "toiture",
+    "fissure",
+    "humidite",
+    "griffures",
+    "menuiserie",
+    "voirie",
+    "cloture",
+    "local_piece",
+    "jardin",
+    "observations_sur_terrain",
+    "remise_cles",
+    "etat_equipement",
+    "lampe",
+    "prise_courant",
+    "alarme_incendie"
+  ],
+  "templates": {
+    "lampe": {
+      "label": "Lampe",
+      "color": "#d97706",
+      "specKeys": [
+        "lifespan",
+        "electricConsumption",
+        "lightOutputLux",
+        "material",
+        "weightKg",
+        "purchasePrice"
+      ],
+      "importAliases": ["lamp", "light"]
+    },
+    "prise_courant": {
+      "label": "Prise de courant",
+      "color": "#7c3aed",
+      "specKeys": ["electricConsumption", "material", "weightKg", "purchasePrice"],
+      "importAliases": ["prise", "outlet", "socket"]
+    },
+    "alarme_incendie": {
+      "label": "Alarme incendie",
+      "color": "#dc2626",
+      "specKeys": ["lifespan", "electricConsumption", "material", "weightKg", "purchasePrice"],
+      "importAliases": ["alarme", "fire_alarm", "firealarm", "detecteur_incendie"]
+    },
+    "fissure": {
+      "label": "Fissure",
+      "color": "#ff0000",
+      "specKeys": ["crackLengthCm", "crackWidthCm"],
+      "builtinSpecDefaults": { "crackLengthCm": "10", "crackWidthCm": "1" },
+      "importAliases": ["crack", "fissure_mur", "fissuremur", "microfissure"]
+    },
+    "observations_sur_terrain": {
+      "label": "Observations sur terrain",
+      "color": "#5c3d2e",
+      "specKeys": ["material", "lifespan"],
+      "importAliases": [
+        "observation_sur_terrain",
+        "observations_terrain",
+        "observation_terrain",
+        "terrain_observation",
+        "observationterrain"
+      ]
+    },
+    "defaut_mur": {
+      "label": "Défaut de mur",
+      "color": "#b45309",
+      "specKeys": [],
+      "importAliases": ["defaut_de_mur", "defautmur", "mur_defaut", "wall_defect", "walldefect"]
+    },
+    "sol": {
+      "label": "SOL",
+      "color": "#57534e",
+      "specKeys": [],
+      "importAliases": ["floor", "sol_matiere", "solmatiere"]
+    },
+    "plafond": {
+      "label": "Plafond",
+      "color": "#78716c",
+      "specKeys": [],
+      "importAliases": ["ceiling", "faux_plafond", "plafonds"]
+    },
+    "facade": {
+      "label": "Façade",
+      "color": "#0369a1",
+      "specKeys": [],
+      "importAliases": ["facade", "mur_exterieur", "parement", "crepis_facade"]
+    },
+    "toiture": {
+      "label": "Toiture / couverture",
+      "color": "#44403c",
+      "specKeys": [],
+      "importAliases": ["toiture", "couverture", "roof", "charpente_couverture"]
+    },
+    "humidite": {
+      "label": "Humidité / infiltration",
+      "color": "#0ea5e9",
+      "specKeys": ["material", "lifespan"],
+      "importAliases": ["humidite", "infiltration", "condensation", "moisissure", "moisture"]
+    },
+    "griffures": {
+      "label": "Griffures / frottements",
+      "color": "#92400e",
+      "specKeys": ["material"],
+      "importAliases": ["griffures", "griffure", "frottement", "scratches", "traces"]
+    },
+    "menuiserie": {
+      "label": "Menuiserie (int. / ext.)",
+      "color": "#a16207",
+      "specKeys": ["material", "crackLengthCm", "crackWidthCm"],
+      "importAliases": ["menuiserie", "fenetre", "porte", "dormant", "vitrage_menuiserie"]
+    },
+    "voirie": {
+      "label": "Voirie / revêtement dur",
+      "color": "#52525b",
+      "specKeys": ["crackLengthCm", "crackWidthCm", "material"],
+      "importAliases": ["voirie", "enrobe", "enrobé", "pave", "pavé", "joint_voirie"]
+    },
+    "cloture": {
+      "label": "Clôture / limite parcelle",
+      "color": "#4d7c0f",
+      "specKeys": ["material", "lifespan"],
+      "importAliases": ["cloture", "clôture", "grillage", "fence", "portail"]
+    },
+    "remise_cles": {
+      "label": "Remise des clés / badges",
+      "color": "#ca8a04",
+      "specKeys": [],
+      "importAliases": ["remise_cles", "remise_clefs", "badges", "bordereau_cles"]
+    },
+    "local_piece": {
+      "label": "Local / pièce (contexte)",
+      "color": "#6366f1",
+      "specKeys": ["material", "lifespan"],
+      "importAliases": ["local", "piece", "pièce", "zone", "garage", "couloir", "cave"]
+    },
+    "jardin": {
+      "label": "Jardin / espaces verts",
+      "color": "#166534",
+      "specKeys": ["material"],
+      "importAliases": ["jardin", "espaces_verts", "garden", "vegetalisation"]
+    },
+    "etat_equipement": {
+      "label": "État d'équipement",
+      "color": "#c2410c",
+      "specKeys": ["electricConsumption", "material", "weightKg", "lifespan"],
+      "importAliases": ["equipement", "équipement", "equipement_abime", "installation"]
+    }
+  },
+  "integratedSurface": {
+    "autreValue": "__autre__",
+    "matiereWidgetProfiles": [
+      {
+        "templateId": "defaut_mur",
+        "detailLineLabel": "Matière",
+        "presetKey": "mur_matiere_preset",
+        "autreKey": "mur_matiere_autre",
+        "choices": [
+          { "value": "mdf_beton", "label": "Panneaux de fibres de bois et béton" },
+          { "value": "peinture", "label": "Peinture" },
+          { "value": "vitrage", "label": "Vitrage" },
+          { "value": "platre", "label": "Plâtre" },
+          { "value": "papier_peint", "label": "Papier peint" },
+          { "value": "crepis", "label": "Crépis" }
+        ]
+      },
+      {
+        "templateId": "sol",
+        "detailLineLabel": "Matière",
+        "presetKey": "sol_matiere_preset",
+        "autreKey": "sol_matiere_autre",
+        "choices": [
+          { "value": "beton", "label": "Béton" },
+          { "value": "resine", "label": "Résine" },
+          { "value": "carrelage", "label": "Carrelage" },
+          { "value": "faux_plancher", "label": "Faux plancher" },
+          { "value": "faux_plancher_technique", "label": "Faux plancher technique" },
+          { "value": "moquette", "label": "Moquette" },
+          { "value": "parquet", "label": "Parquet" }
+        ],
+        "checkboxFields": [
+          { "key": "sol_cb_nombreuses_taches", "label": "Nombreuses tâches" },
+          { "key": "sol_cb_dalle_non_alignee", "label": "Dalle de sol non alignée" },
+          { "key": "sol_cb_dalle_vegetalisee", "label": "Dalle végétalisée" },
+          { "key": "sol_cb_dalle_cassee", "label": "Dalle cassée" },
+          { "key": "sol_cb_sol_abime", "label": "Sol abîmé" },
+          { "key": "sol_cb_fissure_au_sol", "label": "Présence de fissure au sol" }
+        ],
+        "checkboxBlockTitle": "Signalement (cases, optionnel)",
+        "checkboxLinePrefix": "Signalement sol"
+      },
+      {
+        "templateId": "plafond",
+        "detailLineLabel": "Matière",
+        "presetKey": "plafond_matiere_preset",
+        "autreKey": "plafond_matiere_autre",
+        "choices": [
+          { "value": "fibres_bois", "label": "Panneaux de fibres de bois" },
+          { "value": "beton", "label": "Béton" },
+          { "value": "faux_plafond_metal", "label": "Faux plafond métallique" },
+          { "value": "faux_plafond_platre", "label": "Faux plafond plâtre" },
+          { "value": "charpente_bois", "label": "Charpente en bois apparente" },
+          { "value": "platre_enduit", "label": "Plâtre / enduit" }
+        ]
+      },
+      {
+        "templateId": "facade",
+        "detailLineLabel": "Revêtement / composition",
+        "presetKey": "facade_matiere_preset",
+        "autreKey": "facade_matiere_autre",
+        "choices": [
+          { "value": "crepis", "label": "Crépis" },
+          { "value": "enduit", "label": "Enduit" },
+          { "value": "etics", "label": "Isolation rapportée (type ETICS)" },
+          { "value": "pierre", "label": "Pierre / maçonnerie" },
+          { "value": "brique", "label": "Brique" },
+          { "value": "bardage", "label": "Bardage" },
+          { "value": "vitrage_facade", "label": "Vitrage / murs-rideaux" }
+        ]
+      },
+      {
+        "templateId": "toiture",
+        "detailLineLabel": "Type de couverture",
+        "presetKey": "toiture_matiere_preset",
+        "autreKey": "toiture_matiere_autre",
+        "choices": [
+          { "value": "ardoise", "label": "Ardoise naturelle" },
+          { "value": "tuiles", "label": "Tuiles" },
+          { "value": "zinc", "label": "Zinc" },
+          { "value": "bac_acier", "label": "Bac acier" },
+          { "value": "membrane", "label": "Membrane / étanchéité" }
+        ]
+      }
+    ]
+  }
+}
