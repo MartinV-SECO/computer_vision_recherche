@@ -11,8 +11,9 @@ Pour les calculs de volume (src/depth_field_V4_voxel_volume.ipynb), essayer d'ob
 automatisation dessin/modélisation:
 - Réseau de neurones pour classifier les points des fichiers dwg/dxf (src/layer_classification/). Le target est actuellement de distinguer les points "réels" et les points "fictifs". Pour une modélisation 3D simple de l'objet ou un tracé plus propre du fichier.
 - Création d'objet 3D à partir d'un fichier DXF (src/dxf_to_3d_from_layers.ipynb). Export PLY possible, il faut que le fichier DXF soit propre (aucun point "fictif").
-- outil web pour passer d'une tranche de points (limites détectables automatiquement), downsampler le nuage de point et l'afficher en 2D (plan d'étage). Avec la tranche de point dessinée, possibilité de tracer les premières lignes pour un début de DXF. 2 algos disponibles, alpha shape/Delaunay, pour les grosse densité de points. Et RANSAC, avec le choix du nombre de ligne à placer à l'avancer dans le cadre d'un plus petit nuage de points
-- 
+- outil web pour passer d'une tranche de points (limites détectables automatiquement), downsampler le nuage de point et l'afficher en 2D (plan d'étage). Avec la tranche de point dessinée, possibilité de tracer les premières lignes pour un début de DXF. 2 algos disponibles, alpha shape/Delaunay, pour les grosse densité de points. Et RANSAC, avec le choix du nombre de ligne à placer à l'avancer dans le cadre d'un plus petit nuage de points.
+
+Projet AR: premières briques sur CV_3D. Il faut maintenant superposer une maquette (géométrie) avec une position réelle. 
 
 
 
