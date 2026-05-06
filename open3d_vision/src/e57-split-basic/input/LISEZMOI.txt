@@ -1,0 +1,8 @@
+Dossier conseillé pour déposer le fichier .e57 une fois téléchargé depuis NavVis IVION.
+
+Ensuite, depuis le dossier parent (e57-split-basic) :
+  .\run_split.ps1
+
+Si un seul fichier .e57 est présent ici, le script l'utilise automatiquement.
+Sinon, précisez le chemin complet :
+  .\run_split.ps1 -InputE57 "C:\chemin\complet\fichier.e57" -OutputDir "C:\chemin\vers\sortie_chunks"

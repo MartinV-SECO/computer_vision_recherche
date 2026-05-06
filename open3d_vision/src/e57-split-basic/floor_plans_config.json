@@ -1,0 +1,5 @@
+{
+  "comment": "Coordonnees monde en metres, dans le meme repere que les poses pano (X=Est, Y=Nord, Z=Haut). worldBounds = etendue rectangulaire du plan (SANS les marges / cartouches). imageOrientation: north-up (haut de l image = nord/+Y) ou east-up (haut = est/+X, plan pivote 90deg CCW).",
+  "generatedBy": "etl_georeference_floors.py (template auto-genere)",
+  "floors": []
+}

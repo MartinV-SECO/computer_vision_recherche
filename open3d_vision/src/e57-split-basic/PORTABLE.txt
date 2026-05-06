@@ -1,0 +1,14 @@
+Version nomade (sans Python sur le PC cible)
+=============================================
+
+Contenu minimal sur cle USB (tout dans le meme dossier) :
+  - decoupe.exe
+  - dossier internal  (obligatoire ; ne pas renommer ni supprimer)
+  - dossiers in et out
+
+Double-clic sur decoupe.exe : traite tous les .e57 dans in/, ecrit dans out/.
+
+Construction (poste developpeur avec Python) :
+  ..\\scripts\\build_split_e57_portable.ps1
+
+Variante Python (developpement) : voir split_e57_chunks.py + setup_venv.ps1 dans ce kit.

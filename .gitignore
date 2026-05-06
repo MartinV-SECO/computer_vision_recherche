@@ -201,6 +201,24 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# --- Workspace open3d_vision (données & clones lourds, non versionnés) ---
+/open3d_vision/data/
+/open3d_vision/.venv/
+/open3d_vision/archives/
+/open3d_vision/models/
+/open3d_vision/output/
+/open3d_vision/ml-depth-pro/
+/open3d_vision/map-anything/
+/open3d_vision/map-anything-main/
+/open3d_vision/LibreCAD/
+/open3d_vision/DDC_Converter_DWG/
+
+# Artefacts souvent > quelques Mo sous open3d_vision/src (copie initiale filtrée ; évite les re-commits)
+/open3d_vision/src/**/*.npy
+/open3d_vision/src/**/*.ply
+/open3d_vision/src/**/*.pcd
+/open3d_vision/src/inference_outputs/
+
 # Marimo
 marimo/_static/
 marimo/_lsp/

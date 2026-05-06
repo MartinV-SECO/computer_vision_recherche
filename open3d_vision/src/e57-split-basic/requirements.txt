@@ -1,0 +1,3 @@
+# Environnement minimal pour split_e57_chunks.py (option « basique »)
+numpy>=1.23,<3
+e57>=0.2.0

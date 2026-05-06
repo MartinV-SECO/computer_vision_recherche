@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viewer 360 Panos</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <h1>Viewer 360</h1>
+        <p class="hint">Panos charges depuis <code>pano-poses-registered.csv</code>.</p>
+
+        <label for="panoSelect">Panorama</label>
+        <select id="panoSelect"></select>
+        <p id="panoMeta" class="meta"></p>
+
+        <h2>Annotation XYZ</h2>
+        <form id="annotationForm">
+          <input type="hidden" id="annotationId" />
+
+          <label for="label">Libelle</label>
+          <input id="label" type="text" placeholder="Ex: porte technique" required />
+
+          <label for="identifier">Identifiant (optionnel)</label>
+          <input id="identifier" type="text" placeholder="Code / ref. interne" />
+
+          <label for="description">Description (optionnel)</label>
+          <textarea id="description" rows="2" placeholder="Details"></textarea>
+
+          <label for="x">X</label>
+          <input id="x" type="number" step="any" required />
+
+          <label for="y">Y</label>
+          <input id="y" type="number" step="any" required />
+
+          <label for="z">Z</label>
+          <input id="z" type="number" step="any" required />
+
+          <label for="yaw">Yaw (rad)</label>
+          <input id="yaw" type="number" step="any" required />
+
+          <label for="pitch">Pitch (rad)</label>
+          <input id="pitch" type="number" step="any" required />
+
+          <div class="row">
+            <button type="button" id="captureBtn">Capturer orientation courante</button>
+            <button type="submit" id="saveBtn">Enregistrer</button>
+          </div>
+          <button type="button" id="resetBtn" class="secondary">Nouvelle annotation</button>
+        </form>
+
+        <h2>Annotations</h2>
+        <ul id="annotationsList" class="annotations"></ul>
+      </aside>
+
+      <main class="viewerPanel">
+        <div id="viewer"></div>
+        <div id="toast" class="toast"></div>
+      </main>
+    </div>
+
+    <dialog id="quickAnnotationDialog" class="modalDialog">
+      <form id="quickAnnotationForm">
+        <h2 class="modalTitle">Annotation (clic droit)</h2>
+        <p class="modalHint">Le point 3D est calcule dans le repere du CSV : position du pano + direction du rayon x distance.</p>
+        <label for="qaIdentifier">Identifiant</label>
+        <input id="qaIdentifier" type="text" required autocomplete="off" />
+
+        <label for="qaDescription">Description</label>
+        <textarea id="qaDescription" rows="3" placeholder="Texte libre"></textarea>
+
+        <label for="qaDistance">Distance depuis le pano (m)</label>
+        <input id="qaDistance" type="number" min="0.1" step="0.1" value="3" required />
+
+        <div class="modalActions">
+          <button type="button" id="qaCancel" class="secondary">Annuler</button>
+          <button type="submit" id="qaSave">Enregistrer</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.min.js"
+        }
+      }
+    </script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

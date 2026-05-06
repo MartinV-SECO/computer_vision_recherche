@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>E57 → DXF</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 48rem; margin: 2rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: 0.75rem; font-weight: 600; }
+    input, select { width: 100%; max-width: 20rem; margin-top: 0.25rem; }
+    fieldset { margin-top: 1rem; border: 1px solid #ccc; padding: 1rem; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer; }
+    .msg { margin-top: 0.5rem; color: #333; }
+    .err { color: #a00; }
+    #progressWrap { margin-top: 1rem; display: none; }
+    #progressWrap.visible { display: block; }
+    progress { width: 100%; max-width: 28rem; height: 1.25rem; }
+    #previews { margin-top: 1.5rem; display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+    @media (min-width: 900px) {
+      #previews { grid-template-columns: repeat(2, 1fr); }
+      #previews figure.preview-tranche { grid-column: 1 / -1; }
+    }
+    #previews figure { margin: 0; border: 1px solid #ddd; padding: 0.5rem; border-radius: 4px; }
+    #previews img { width: 100%; height: auto; display: block; }
+    #previews figcaption { font-size: 0.85rem; margin-top: 0.35rem; color: #444; }
+    #btnDownload { margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>E57 → DXF</h1>
+  <p>Tranche Z, downsampling voxel, alpha-shape et/ou RANSAC. Progression en temps réel et aperçus des méthodes.</p>
+
+  <fieldset>
+    <legend>Fichier</legend>
+    <input type="file" id="e57" accept=".e57" />
+    <button type="button" id="btnZ">Analyser Z (échantillon)</button>
+    <div id="zMsg" class="msg"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Tranche Z (mètres)</legend>
+    <label>z_min <input type="number" id="z_min" step="any" /></label>
+    <label>z_max <input type="number" id="z_max" step="any" /></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Prétraitement</legend>
+    <label>Taille voxel (m) <input type="number" id="voxel_size" value="0.05" step="0.001" min="0.001" /></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Méthode</legend>
+    <label><input type="radio" name="method" value="alphashape" checked /> Alpha-shape</label>
+    <label><input type="radio" name="method" value="ransac" /> RANSAC (droites)</label>
+    <label><input type="radio" name="method" value="both" /> Les deux</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Alpha-shape</legend>
+    <label>Alpha <input type="number" id="alpha" value="0.5" step="0.05" min="0.01" /></label>
+    <label>Longueur min. arête (m) <input type="number" id="alpha_min_edge_length" value="0" step="0.01" min="0" title="Arêtes plus courtes ignorées (0 = désactivé)" /></label>
+    <label>Simplification contour (m) <input type="number" id="alpha_simplify_tolerance" value="0" step="0.01" min="0" title="Tolérance Douglas-Peucker (0 = désactivé)" /></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>RANSAC</legend>
+    <label>Nombre max de droites <input type="number" id="max_ransac_lines" value="6" min="1" max="50" /></label>
+    <label>Seuil distance (m) <input type="number" id="ransac_dist_thresh" value="0.08" step="0.01" /></label>
+    <label>Tirages RANSAC <input type="number" id="ransac_n_draws" value="1000" min="10" /></label>
+    <label>Min inliers <input type="number" id="ransac_min_inliers" value="8" min="3" /></label>
+    <label>Seed <input type="number" id="seed" value="42" /></label>
+  </fieldset>
+
+  <button type="button" id="btnConvert">Générer DXF</button>
+  <div id="progressWrap">
+    <progress id="prog" max="100" value="0"></progress>
+    <div id="progMsg" class="msg"></div>
+  </div>
+  <div id="convMsg" class="msg"></div>
+  <div id="previews"></div>
+  <button type="button" id="btnDownload" style="display:none;">Télécharger le DXF</button>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let currentJobId = null;
+
+    $("btnZ").onclick = async () => {
+      const f = $("e57").files[0];
+      $("zMsg").textContent = "";
+      $("zMsg").className = "msg";
+      if (!f) { $("zMsg").textContent = "Choisis un fichier .e57"; $("zMsg").className = "msg err"; return; }
+      const fd = new FormData();
+      fd.append("file", f);
+      try {
+        const r = await fetch("/api/z-range", { method: "POST", body: fd });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.detail || r.statusText);
+        $("z_min").value = j.z_min;
+        $("z_max").value = j.z_max;
+        $("zMsg").textContent = "Z estimé sur échantillon — " + j.n_points_total + " points au total.";
+      } catch (e) {
+        $("zMsg").textContent = String(e.message || e);
+        $("zMsg").className = "msg err";
+      }
+    };
+
+    function buildFormData() {
+      const f = $("e57").files[0];
+      if (!f) return null;
+      const method = document.querySelector("input[name=method]:checked").value;
+      const fd = new FormData();
+      fd.append("file", f);
+      fd.append("z_min", $("z_min").value);
+      fd.append("z_max", $("z_max").value);
+      fd.append("voxel_size", $("voxel_size").value);
+      fd.append("alpha", $("alpha").value);
+      fd.append("alpha_min_edge_length", $("alpha_min_edge_length").value);
+      fd.append("alpha_simplify_tolerance", $("alpha_simplify_tolerance").value);
+      fd.append("max_ransac_lines", $("max_ransac_lines").value);
+      fd.append("ransac_dist_thresh", $("ransac_dist_thresh").value);
+      fd.append("ransac_n_draws", $("ransac_n_draws").value);
+      fd.append("ransac_min_inliers", $("ransac_min_inliers").value);
+      fd.append("method", method);
+      fd.append("seed", $("seed").value);
+      return fd;
+    }
+
+    function resetPreviews() {
+      $("previews").innerHTML = "";
+      $("btnDownload").style.display = "none";
+      currentJobId = null;
+    }
+
+    $("btnConvert").onclick = async () => {
+      resetPreviews();
+      $("convMsg").textContent = "";
+      $("convMsg").className = "msg";
+      const fd = buildFormData();
+      if (!fd) { $("convMsg").textContent = "Choisis un fichier .e57"; $("convMsg").className = "msg err"; return; }
+
+      $("progressWrap").className = "visible";
+      $("prog").value = 0;
+      $("progMsg").textContent = "Envoi du fichier…";
+
+      try {
+        const start = await fetch("/api/convert/start", { method: "POST", body: fd });
+        const sj = await start.json();
+        if (!start.ok) throw new Error(sj.detail || start.statusText);
+        const jobId = sj.job_id;
+        currentJobId = jobId;
+
+        const poll = () => new Promise((resolve, reject) => {
+          const t = setInterval(async () => {
+            try {
+              const pr = await fetch("/api/convert/progress/" + encodeURIComponent(jobId));
+              const pj = await pr.json();
+              if (!pr.ok) { clearInterval(t); reject(new Error(pj.detail || pr.statusText)); return; }
+              $("prog").value = pj.progress || 0;
+              $("progMsg").textContent = (pj.message || "") + " (" + (pj.progress || 0) + " %)";
+              if (pj.status === "done") { clearInterval(t); resolve(); return; }
+              if (pj.status === "error") { clearInterval(t); reject(new Error(pj.error || "Erreur")); return; }
+            } catch (e) { clearInterval(t); reject(e); }
+          }, 400);
+        });
+
+        await poll();
+
+        const pv = await fetch("/api/convert/previews/" + encodeURIComponent(jobId));
+        const prev = await pv.json();
+        if (!pv.ok) throw new Error(prev.detail || pv.statusText);
+
+        const labels = {
+          tranche: "Tranche Z — nuage XY (avant voxel)",
+          downsampled: "Grille downsamplée (voxel) — avant traçage",
+          alphashape: "Alpha-shape (contour)",
+          ransac: "RANSAC (droites)",
+          combined: "Vue combinée",
+        };
+        const box = $("previews");
+        ["tranche", "downsampled", "alphashape", "ransac", "combined"].forEach((key) => {
+          const url = prev[key];
+          if (!url) return;
+          const fig = document.createElement("figure");
+          if (key === "tranche" || key === "downsampled") fig.className = "preview-tranche";
+          const img = document.createElement("img");
+          img.src = url;
+          img.alt = labels[key];
+          const cap = document.createElement("figcaption");
+          cap.textContent = labels[key];
+          fig.appendChild(img);
+          fig.appendChild(cap);
+          box.appendChild(fig);
+        });
+
+        $("convMsg").textContent = "Terminé — méthode : " + (prev.method || "") + ". Télécharge le DXF ci-dessous.";
+        $("btnDownload").style.display = "inline-block";
+      } catch (e) {
+        $("convMsg").textContent = String(e.message || e);
+        $("convMsg").className = "msg err";
+      } finally {
+        $("progressWrap").className = $("prog").value >= 100 ? "visible" : "";
+        if ($("convMsg").className.includes("err")) $("progressWrap").className = "";
+      }
+    };
+
+    $("btnDownload").onclick = () => {
+      if (!currentJobId) return;
+      window.location.href = "/api/convert/result/" + encodeURIComponent(currentJobId);
+    };
+  </script>
+</body>
+</html>

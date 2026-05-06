@@ -1,0 +1,20 @@
+# Computer Vision avec Open3D
+open3d>=0.19.0
+ezdxf>=1.0.0
+geopandas>=0.14.0
+shapely>=2.0.0
+numpy>=1.24.0
+opencv-python>=4.8.0
+pyvista>=0.43.0
+
+# Interface web dessin vectoriel (vectorial_drawing_web.py)
+fastapi>=0.100.0
+uvicorn>=0.22.0
+
+# Classification chaîne -> layer (réseau de neurones)
+# Pour keras-io/monocular-depth-estimation : charger avec tf.saved_model.load(..., tags=["serve"])
+tensorflow>=2.16.0
+
+# Modèle Keras depuis Hugging Face (monocular-depth-estimation)
+huggingface_hub>=0.20.0
+keras>=3.0.0

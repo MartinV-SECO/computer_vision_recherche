@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "open3d_vision"
+version = "0.1.0"
+description = "Pipeline CV+3D : webcam → segmentation Otsu → extrusion mesh Open3D"
+requires-python = ">=3.10"
+dependencies = [
+    "opencv-python>=4.9",
+    "open3d>=0.18",
+    "numpy>=1.26",
+    "scipy>=1.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+]
+
+[project.scripts]
+open3d-vision = "src.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
